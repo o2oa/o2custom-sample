@@ -114,7 +114,7 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>../custom</outputDirectory>
+							<outputDirectory>../store</outputDirectory>
 							<resources>
 								<resource>
 									<directory>target</directory>
