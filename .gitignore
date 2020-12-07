@@ -161,6 +161,10 @@ local.properties
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
+**/pmd.xml
+**/cpd.xml
+**/pmd.html
+**/cpd.html
 
 # custom
 app/**/*.iml
@@ -171,6 +175,7 @@ app/*.iml
 app/.project
 app/**/*.log
 app/log/dsdh/*.log
+*/src/main/webapp/describe/
 
 assembly/.settings
 assembly/.project
