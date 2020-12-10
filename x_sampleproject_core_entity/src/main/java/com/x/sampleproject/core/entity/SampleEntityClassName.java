@@ -12,12 +12,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
+import com.x.base.core.entity.annotation.*;
 import org.apache.openjpa.persistence.jdbc.Index;
 
 import com.x.base.core.entity.JpaObject;
 import com.x.base.core.entity.SliceJpaObject;
-import com.x.base.core.entity.annotation.CheckPersist;
-import com.x.base.core.entity.annotation.ContainerEntity;
 import com.x.base.core.project.annotation.FieldDescribe;
 
 @ContainerEntity
@@ -60,19 +59,31 @@ public class SampleEntityClassName extends SliceJpaObject {
 	 * =============================================================================
 	 * =====
 	 */
-	@FieldDescribe("示例字符串field")
-	@Index(name = TABLE + "_name")
-	@Column(name = "xname", length = JpaObject.length_255B)
+	public static final String name_FIELDNAME = "name";
+	@FieldDescribe("名称")
+	@RestrictFlag
+	@Index(name = TABLE + IndexNameMiddle + name_FIELDNAME)
+	@Column(length = length_255B, name = ColumnNamePrefix + name_FIELDNAME)
 	@CheckPersist(allowEmpty = false)
 	private String name;
 
-	@FieldDescribe("示例时间field")
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "xdate")
+	public static final String alias_FIELDNAME = "alias";
+	@RestrictFlag
+	@FieldDescribe("别名.")
+	@Column(length = length_255B, name = ColumnNamePrefix + alias_FIELDNAME)
+	@Index(name = TABLE + IndexNameMiddle + alias_FIELDNAME)
+	@CheckPersist(allowEmpty = true, simplyString = true)
+	private String alias;
+
+	public static final String date_FIELDNAME = "date";
+	@FieldDescribe("时间")
+	@Temporal(TemporalType.DATE)
+	@Column(name = ColumnNamePrefix + date_FIELDNAME)
 	private Date date;
 
-	@FieldDescribe("示例整型数字field")
-	@Column(name = "xorderNumber")
+	public static final String orderNumber_FIELDNAME = "orderNumber";
+	@FieldDescribe("排序号")
+	@Column(name = ColumnNamePrefix + orderNumber_FIELDNAME)
 	@CheckPersist(allowEmpty = false)
 	private Integer orderNumber;
 
