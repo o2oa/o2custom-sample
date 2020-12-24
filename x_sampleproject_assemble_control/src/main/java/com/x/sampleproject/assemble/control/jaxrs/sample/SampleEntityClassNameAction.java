@@ -15,13 +15,13 @@ import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import com.google.gson.JsonElement;
 import com.x.base.core.project.annotation.JaxrsDescribe;
 import com.x.base.core.project.annotation.JaxrsMethodDescribe;
 import com.x.base.core.project.annotation.JaxrsParameterDescribe;
 import com.x.base.core.project.http.ActionResult;
+import com.x.base.core.project.http.EffectivePerson;
 import com.x.base.core.project.http.HttpMediaType;
 import com.x.base.core.project.jaxrs.ResponseFactory;
 import com.x.base.core.project.jaxrs.StandardJaxrsAction;
@@ -32,107 +32,115 @@ import com.x.base.core.project.logger.LoggerFactory;
 @Path("sample")
 @JaxrsDescribe("示例-信息管理服务")
 public class SampleEntityClassNameAction extends StandardJaxrsAction{
-	
+
 	private static Logger logger = LoggerFactory.getLogger( SampleEntityClassNameAction.class );
-	
-	
+
 	@JaxrsMethodDescribe( value = "根据ID获取示例-信息", action = ActionGet.class )
 	@GET
 	@Path("{id}")
 	@Produces(HttpMediaType.APPLICATION_JSON_UTF_8)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response get(@Context HttpServletRequest request, @JaxrsParameterDescribe("示例-信息ID") @PathParam("id") String id) {
+	public void get(@Suspended final AsyncResponse asyncResponse, @Context HttpServletRequest request, @JaxrsParameterDescribe("示例-信息ID") @PathParam("id") String id) {
 		ActionResult<ActionGet.Wo> result = new ActionResult<>();
+		EffectivePerson effectivePerson = this.effectivePerson(request);
 		try {
-			result = new ActionGet().execute( request, this.effectivePerson(request), id );
+			result = new ActionGet().execute( request, effectivePerson, id );
 		} catch (Exception e) {
-			result = new ActionResult<>();
-			Exception exception = new ExceptionSampleEntityClassFind( e, "根据ID获取示例-信息时发生异常！" );
-			result.error( exception );
-			logger.error( e, this.effectivePerson(request), request, null);
-		}	
-		return ResponseFactory.getDefaultActionResultResponse(result);
+			logger.error(e, effectivePerson, request, null);
+			result.error(e);
+		}
+		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
 	}
-	
+
 	@JaxrsMethodDescribe( value = "获取所有的示例-信息", action = ActionListAll.class )
 	@GET
 	@Path("all")
 	@Produces(HttpMediaType.APPLICATION_JSON_UTF_8)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response listAll(@Context HttpServletRequest request ) {
+	public void listAll(@Suspended final AsyncResponse asyncResponse, @Context HttpServletRequest request ) {
 		ActionResult<List<ActionListAll.Wo>> result = new ActionResult<>();
-		Boolean check = true;
+		EffectivePerson effectivePerson = this.effectivePerson(request);
 
-		if(check){
-			try {
-				result = new ActionListAll().execute( request, this.effectivePerson(request) );
-			} catch (Exception e) {
-				result = new ActionResult<>();
-				Exception exception = new ExceptionSampleEntityClassFind( e, "根据ID获取示例-信息时发生异常！" );
-				result.error( exception );
-				logger.error( e, this.effectivePerson(request), request, null);
-			}	
+		try {
+			result = new ActionListAll().execute( request, effectivePerson );
+		} catch (Exception e) {
+			logger.error(e, effectivePerson, request, null);
+			result.error(e);
 		}
-		return ResponseFactory.getDefaultActionResultResponse(result);
+		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
 	}
-	
-	@JaxrsMethodDescribe( value = "更新新示例-信息", action = ActionUpdate.class )
-	@PUT
+
+	@JaxrsMethodDescribe(value = "分页列示对象.", action = ActionListPaging.class)
+	@POST
+	@Path("list/paging/{page}/size/{size}")
 	@Produces(HttpMediaType.APPLICATION_JSON_UTF_8)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response save( @Context HttpServletRequest request, 
-			@JaxrsParameterDescribe("需要更新的-信息ID") @PathParam("id") String id, 
+	public void listPaging(@Suspended final AsyncResponse asyncResponse, @Context HttpServletRequest request,
+						   @JaxrsParameterDescribe("分页") @PathParam("page") Integer page,
+						   @JaxrsParameterDescribe("每页数量") @PathParam("size") Integer size) {
+		ActionResult<List<ActionListPaging.Wo>> result = new ActionResult<>();
+		EffectivePerson effectivePerson = this.effectivePerson(request);
+		try {
+			result = new ActionListPaging().execute(effectivePerson, page, size);
+		} catch (Exception e) {
+			logger.error(e, effectivePerson, request, null);
+			result.error(e);
+		}
+		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
+	}
+
+	@JaxrsMethodDescribe( value = "更新新示例-信息", action = ActionUpdate.class )
+	@PUT
+	@Path("{id}")
+	@Produces(HttpMediaType.APPLICATION_JSON_UTF_8)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void update(@Suspended final AsyncResponse asyncResponse, @Context HttpServletRequest request,
+			@JaxrsParameterDescribe("需要更新的-信息ID") @PathParam("id") String id,
 			@JaxrsParameterDescribe("需要更新的信息") JsonElement jsonElement ) {
 		ActionResult<ActionUpdate.Wo> result = new ActionResult<>();
-		Boolean check = true;
-
-		if(check){
-			try {
-				result = new ActionUpdate().execute( request, this.effectivePerson(request), id, jsonElement );
-			} catch (Exception e) {
-				result = new ActionResult<>();
-				Exception exception = new ExceptionSampleEntityClassFind( e, "新建或者更新示例-信息时发生异常！" );
-				result.error( exception );
-				logger.error( e, this.effectivePerson(request), request, null);
-			}	
+		EffectivePerson effectivePerson = this.effectivePerson(request);
+		try {
+			result = new ActionUpdate().execute( request, effectivePerson, id, jsonElement );
+		} catch (Exception e) {
+			logger.error(e, effectivePerson, request, null);
+			result.error(e);
 		}
-		return ResponseFactory.getDefaultActionResultResponse(result);
+		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
 	}
-	
+
 	@JaxrsMethodDescribe( value = "创建新示例-信息", action = ActionSave.class )
 	@POST
 	@Produces(HttpMediaType.APPLICATION_JSON_UTF_8)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response save( @Context HttpServletRequest request, @JaxrsParameterDescribe("需要保存的信息") JsonElement jsonElement) {
+	public void save(@Suspended final AsyncResponse asyncResponse, @Context HttpServletRequest request,
+						 @JaxrsParameterDescribe("需要保存的信息") JsonElement jsonElement) {
 		ActionResult<ActionSave.Wo> result = new ActionResult<>();
-		Boolean check = true;
+		EffectivePerson effectivePerson = this.effectivePerson(request);
 
-		if(check){
-			try {
-				result = new ActionSave().execute( request, this.effectivePerson(request), jsonElement );
-			} catch (Exception e) {
-				result = new ActionResult<>();
-				Exception exception = new ExceptionSampleEntityClassFind( e, "新建或者更新示例-信息时发生异常！" );
-				result.error( exception );
-				logger.error( e, this.effectivePerson(request), request, null);
-			}	
+		try {
+			result = new ActionSave().execute( request, effectivePerson, jsonElement );
+		} catch (Exception e) {
+			logger.error(e, effectivePerson, request, null);
+			result.error(e);
 		}
-		return ResponseFactory.getDefaultActionResultResponse(result);
+		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
 	}
-	
+
 	@JaxrsMethodDescribe(value = "根据标识ID删除信息.", action = ActionDelete.class)
 	@DELETE
 	@Path("{id}")
 	@Produces(HttpMediaType.APPLICATION_JSON_UTF_8)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void delete(@Suspended final AsyncResponse asyncResponse,  @Context HttpServletRequest request,  @JaxrsParameterDescribe("需要删除的数据ID") @PathParam("id") String id ) {
+	public void delete(@Suspended final AsyncResponse asyncResponse,  @Context HttpServletRequest request,
+					   @JaxrsParameterDescribe("需要删除的数据ID") @PathParam("id") String id ) {
 		ActionResult<ActionDelete.Wo> result = new ActionResult<>();
+		EffectivePerson effectivePerson = this.effectivePerson(request);
 		try {
-			result = new ActionDelete().execute(request, this.effectivePerson(request), id);
+			result = new ActionDelete().execute(request, effectivePerson, id);
 		} catch (Exception e) {
-			logger.error(e, this.effectivePerson(request), request, null);
+			logger.error(e, effectivePerson, request, null);
 			result.error(e);
 		}
-		asyncResponse.resume(ResponseFactory.getDefaultActionResultResponse(result));
+		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
 	}
 }

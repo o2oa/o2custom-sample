@@ -25,106 +25,40 @@ import com.x.sampleproject.core.entity.SampleEntityClassName;
  * 示例数据信息保存服务
  */
 public class ActionSave extends BaseAction {
-	
+
 	private static  Logger logger = LoggerFactory.getLogger( ActionSave.class );
-	
+
 	protected ActionResult<Wo> execute( HttpServletRequest request, EffectivePerson effectivePerson, JsonElement jsonElement ) throws Exception {
 		ActionResult<Wo> result = new ActionResult<>();
-		Wi wi = null;
-		SampleEntityClassName sampleEntityClassName = null;
-		Boolean check = true;
-
-		try {
-			wi = this.convertToWrapIn( jsonElement, Wi.class );
-		} catch (Exception e) {
-			check = false;
-			Exception exception = new ExceptionSampleEntityClassProcess(e, "系统在将JSON信息转换为对象时发生异常。JSON:" + jsonElement.toString());
-			result.error(exception);
-			logger.error(e, effectivePerson, request, null);
+		Wi wi = this.convertToWrapIn( jsonElement, Wi.class );
+		if( StringUtils.isEmpty( wi.getName() )) {
+			throw new ExceptionSampleEntityClassNameEmpty();
 		}
+		try (EntityManagerContainer emc = EntityManagerContainerFactory.instance().create()) {
+			SampleEntityClassName sampleEntityClassName = Wi.copier.copy( wi );
+			//启动事务
+			emc.beginTransaction( SampleEntityClassName.class );
+			//校验对象
+			emc.check( sampleEntityClassName, CheckPersistType.all );
+			//提交事务
+			emc.commit();
 
-		if (check) {
-			if( StringUtils.isNotEmpty( wi.getName() )) {
-				check = false;
-				Exception exception = new ExceptionSampleEntityClassNameEmpty();
-				result.error(exception);
-			}
-		}
-
-		if (check) {
-			sampleEntityClassName = Wi.copier.copy( wi );
-			try (EntityManagerContainer emc = EntityManagerContainerFactory.instance().create()) {
-				//启动事务
-				emc.beginTransaction( SampleEntityClassName.class );
-				//保存对象
-				emc.persist( sampleEntityClassName, CheckPersistType.all );
-				//提交事务
-				emc.commit();
-			} catch (Exception e) {
-				Exception exception = new ExceptionSampleEntityClassProcess( e, "系统在保存数据记录时发生异常!" );
-				result.error( exception );
-				logger.error(e);
-			}		
+			Wo wo = new Wo(sampleEntityClassName.getId());
+			result.setData(wo);
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 用于接受前端传入的对象型参数的帮助类
 	 *
 	 */
-	public static class Wi {
-		
-		public static WrapCopier<Wi, SampleEntityClassName> copier = WrapCopierFactory.wi( Wi.class, SampleEntityClassName.class, null, JpaObject.FieldsUnmodifyExcludeId );
-		
-		@FieldDescribe("数据库主键,自动生成.")
-		private String id;
+	public static class Wi extends SampleEntityClassName{
 
-		public void onPersist() throws Exception {
-		}
-		
-		@FieldDescribe("示例字符串field")
-		private String name;
+		public static WrapCopier<Wi, SampleEntityClassName> copier = WrapCopierFactory.wi( Wi.class, SampleEntityClassName.class, null, JpaObject.FieldsUnmodify );
 
-		@FieldDescribe("示例时间field")
-		private Date date;
-
-		@FieldDescribe("示例整型数字field")
-		private Integer orderNumber;
-
-		public String getId() {
-			return id;
-		}
-
-		public void setId(String id) {
-			this.id = id;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public Date getDate() {
-			return date;
-		}
-
-		public void setDate(Date date) {
-			this.date = date;
-		}
-
-		public Integer getOrderNumber() {
-			return orderNumber;
-		}
-
-		public void setOrderNumber(Integer orderNumber) {
-			this.orderNumber = orderNumber;
-		}
 	}
-	
+
 	/**
 	 * 用于输出响应内容的帮助类
 	 *

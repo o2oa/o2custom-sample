@@ -95,6 +95,14 @@ public class SampleEntityClassName extends SliceJpaObject {
 		this.name = name;
 	}
 
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
+
 	public Date getDate() {
 		return date;
 	}
