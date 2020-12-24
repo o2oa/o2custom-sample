@@ -20,7 +20,7 @@ class ActionListPaging extends BaseAction {
 			ActionResult<List<Wo>> result = new ActionResult<>();
 			EntityManager em = emc.get(SampleEntityClassName.class);
 			CriteriaBuilder cb = em.getCriteriaBuilder();
-			Predicate p = cb.conjunction();;
+			Predicate p = cb.conjunction();
 			List<Wo> wos = emc.fetchDescPaging(SampleEntityClassName.class, Wo.copier, p, page, size, SampleEntityClassName.sequence_FIELDNAME);
 			result.setData(wos);
 			result.setCount(emc.count(SampleEntityClassName.class, p));
