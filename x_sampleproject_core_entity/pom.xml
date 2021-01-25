@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>o2oa</groupId>
 		<artifactId>o2oa_custom</artifactId>
-		<version>5.3</version>
+		<version>5.4</version>
 	</parent>
 	<artifactId>x_sampleproject_core_entity</artifactId>
 	<packaging>jar</packaging>
