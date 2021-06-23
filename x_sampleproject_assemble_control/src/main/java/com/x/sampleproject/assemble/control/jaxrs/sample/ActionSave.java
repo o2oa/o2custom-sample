@@ -38,8 +38,8 @@ public class ActionSave extends BaseAction {
 			SampleEntityClassName sampleEntityClassName = Wi.copier.copy( wi );
 			//启动事务
 			emc.beginTransaction( SampleEntityClassName.class );
-			//校验对象
-			emc.check( sampleEntityClassName, CheckPersistType.all );
+			//校验并持久化对象
+			emc.persist( sampleEntityClassName, CheckPersistType.all );
 			//提交事务
 			emc.commit();
 
