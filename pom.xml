@@ -13,4 +13,17 @@
 		<module>x_sampleproject_core_entity</module>
 		<module>x_sampleproject_assemble_control</module>
 	</modules>
+	<repositories>
+		<repository>
+			<id>nexus-o2oa</id>
+			<name>nexus-o2oa</name>
+			<url>http://maven.o2oa.net/repository/maven-public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 </project>
