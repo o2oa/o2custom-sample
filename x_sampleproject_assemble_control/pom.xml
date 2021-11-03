@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>o2oa</groupId>
 		<artifactId>o2oa_custom</artifactId>
-		<version>6.1</version>
+		<version>6.4</version>
 	</parent>
 	<artifactId>x_sampleproject_assemble_control</artifactId>
 	<packaging>war</packaging>
@@ -27,7 +27,7 @@
 		<dependency>
 			<groupId>o2oa</groupId>
 			<artifactId>x_sampleproject_core_entity</artifactId>
-			<version>6.1</version>
+			<version>6.4</version>
 		</dependency>
 	</dependencies>
 	<build>
