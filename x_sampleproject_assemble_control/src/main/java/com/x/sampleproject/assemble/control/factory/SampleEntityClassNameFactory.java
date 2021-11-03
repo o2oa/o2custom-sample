@@ -12,13 +12,13 @@ import com.x.base.core.project.exception.ExceptionWhen;
 import com.x.sampleproject.assemble.control.AbstractFactory;
 import com.x.sampleproject.assemble.control.Business;
 import com.x.sampleproject.core.entity.SampleEntityClassName;
-import com.x.sampleproject.core.entity.SampleEntityClassName_;
 
 /**
  * 示例数据表基础功能服务类
+ * @author sword
  */
 public class SampleEntityClassNameFactory extends AbstractFactory {
-	
+
 	public SampleEntityClassNameFactory( Business business) throws Exception {
 		super(business);
 	}
@@ -32,7 +32,7 @@ public class SampleEntityClassNameFactory extends AbstractFactory {
 	public SampleEntityClassName get( String id ) throws Exception {
 		return this.entityManagerContainer().find(id, SampleEntityClassName.class, ExceptionWhen.none);
 	}
-	
+
 	/**
 	 * 根据ID列示指定的SampleEntityClassName信息列表
 	 * @param ids
@@ -44,7 +44,7 @@ public class SampleEntityClassNameFactory extends AbstractFactory {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<SampleEntityClassName> cq = cb.createQuery(SampleEntityClassName.class);
 		Root<SampleEntityClassName> root = cq.from( SampleEntityClassName.class);
-		Predicate p = root.get(SampleEntityClassName_.id).in(ids);
+		Predicate p = root.get(SampleEntityClassName.id_FIELDNAME).in(ids);
 		return em.createQuery(cq.where(p)).setMaxResults(maxCount).getResultList();
 	}
 
@@ -60,9 +60,9 @@ public class SampleEntityClassNameFactory extends AbstractFactory {
 		CriteriaQuery<SampleEntityClassName> cq = cb.createQuery(SampleEntityClassName.class);
 		Root<SampleEntityClassName> root = cq.from( SampleEntityClassName.class);
 		//根据数据更新时间降序
-		cq.orderBy( cb.desc( root.get( SampleEntityClassName_.updateTime ) ) );
+		cq.orderBy( cb.desc( root.get( SampleEntityClassName.updateTime_FIELDNAME ) ) );
 		return em.createQuery(cq).setMaxResults(maxCount).getResultList();
 	}
-	
-	
+
+
 }

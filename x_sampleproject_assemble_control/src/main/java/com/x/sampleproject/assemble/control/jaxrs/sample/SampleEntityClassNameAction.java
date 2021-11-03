@@ -29,6 +29,9 @@ import com.x.base.core.project.logger.Logger;
 import com.x.base.core.project.logger.LoggerFactory;
 
 
+/**
+ * @author sword
+ */
 @Path("sample")
 @JaxrsDescribe("示例-信息管理服务")
 public class SampleEntityClassNameAction extends StandardJaxrsAction{

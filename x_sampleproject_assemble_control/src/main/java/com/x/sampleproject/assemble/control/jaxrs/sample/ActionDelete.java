@@ -15,7 +15,7 @@ import com.x.sampleproject.core.entity.SampleEntityClassName;
 
 /**
  * 信息数据删除服务
- *
+ * @author sword
  */
 public class ActionDelete extends BaseAction {
 

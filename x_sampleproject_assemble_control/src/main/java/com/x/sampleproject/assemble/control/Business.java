@@ -7,10 +7,16 @@ import com.x.organization.core.express.Organization;
 import com.x.sampleproject.assemble.control.factory.SampleEntityClassNameFactory;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * 应用业务服务类
+ * @author sword
+ */
 public class Business {
 
-	//自定义应用配置文件名称，根据实际配置修改，文件要求为json格式
-	private final static String CUSTOM_CONFIG_NAME = "o2oa_custom";
+	/**
+	 * 自定义应用配置文件名称，根据实际配置修改，文件要求为json格式
+	 */
+	private static final String CUSTOM_CONFIG_NAME = "o2oa_custom";
 
 	private EntityManagerContainer emc;
 
@@ -36,10 +42,14 @@ public class Business {
 		return null;
 	}
 
-	//组织架构管理相关的工厂服务类
+	/**
+	 * 组织架构管理相关的工厂服务类
+	 */
 	private Organization organization;
 
-	//示例数据表工厂服务类
+	/**
+	 * 示例数据表工厂服务类
+	 */
 	private SampleEntityClassNameFactory sampleEntityClassNameFactory;
 
 

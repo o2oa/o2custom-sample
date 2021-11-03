@@ -21,6 +21,10 @@ import com.x.base.core.project.organization.Unit;
 import com.x.sampleproject.assemble.control.Business;
 import com.x.sampleproject.core.entity.SampleEntityClassName;
 
+/**
+ * 根据id查询详细信息
+ * @author sword
+ */
 public class ActionGet extends BaseAction {
 
 	private Logger logger = LoggerFactory.getLogger( ActionGet.class );
@@ -62,7 +66,7 @@ public class ActionGet extends BaseAction {
 
 		public static List<String> Excludes = new ArrayList<String>();
 
-		public static WrapCopier<SampleEntityClassName, Wo> copier = WrapCopierFactory.wo( SampleEntityClassName.class, Wo.class, null, JpaObject.FieldsInvisible);
+		public static final WrapCopier<SampleEntityClassName, Wo> copier = WrapCopierFactory.wo( SampleEntityClassName.class, Wo.class, null, JpaObject.FieldsInvisible);
 	}
 
 }

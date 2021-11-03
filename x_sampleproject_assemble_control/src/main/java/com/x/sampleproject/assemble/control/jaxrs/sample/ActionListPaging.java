@@ -14,7 +14,12 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import java.util.List;
 
-class ActionListPaging extends BaseAction {
+/**
+ * 分页查询
+ * @author sword
+ */
+public class ActionListPaging extends BaseAction {
+
 	ActionResult<List<Wo>> execute(EffectivePerson effectivePerson, Integer page, Integer size) throws Exception {
 		try (EntityManagerContainer emc = EntityManagerContainerFactory.instance().create()) {
 			ActionResult<List<Wo>> result = new ActionResult<>();
@@ -32,7 +37,7 @@ class ActionListPaging extends BaseAction {
 
 		private static final long serialVersionUID = -4635222902589827154L;
 
-		static WrapCopier<SampleEntityClassName, Wo> copier = WrapCopierFactory.wo(SampleEntityClassName.class, Wo.class,
+		static final WrapCopier<SampleEntityClassName, Wo> copier = WrapCopierFactory.wo(SampleEntityClassName.class, Wo.class,
 				JpaObject.singularAttributeField(SampleEntityClassName.class, true, true), null);
 
 	}

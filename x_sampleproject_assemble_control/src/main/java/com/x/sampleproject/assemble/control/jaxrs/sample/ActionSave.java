@@ -1,6 +1,5 @@
 package com.x.sampleproject.assemble.control.jaxrs.sample;
 
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,7 +10,6 @@ import com.x.base.core.container.EntityManagerContainer;
 import com.x.base.core.container.factory.EntityManagerContainerFactory;
 import com.x.base.core.entity.JpaObject;
 import com.x.base.core.entity.annotation.CheckPersistType;
-import com.x.base.core.project.annotation.FieldDescribe;
 import com.x.base.core.project.bean.WrapCopier;
 import com.x.base.core.project.bean.WrapCopierFactory;
 import com.x.base.core.project.http.ActionResult;
@@ -23,6 +21,7 @@ import com.x.sampleproject.core.entity.SampleEntityClassName;
 
 /**
  * 示例数据信息保存服务
+ * @author sword
  */
 public class ActionSave extends BaseAction {
 
@@ -55,7 +54,7 @@ public class ActionSave extends BaseAction {
 	 */
 	public static class Wi extends SampleEntityClassName{
 
-		public static WrapCopier<Wi, SampleEntityClassName> copier = WrapCopierFactory.wi( Wi.class, SampleEntityClassName.class, null, JpaObject.FieldsUnmodify );
+		public static final WrapCopier<Wi, SampleEntityClassName> copier = WrapCopierFactory.wi( Wi.class, SampleEntityClassName.class, null, JpaObject.FieldsUnmodify );
 
 	}
 

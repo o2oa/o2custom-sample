@@ -5,6 +5,10 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import com.x.base.core.project.Context;
 
+/**
+ * 应用启停监听
+ * @author sword
+ */
 @WebListener
 public class ApplicationServletContextListener implements ServletContextListener {
 

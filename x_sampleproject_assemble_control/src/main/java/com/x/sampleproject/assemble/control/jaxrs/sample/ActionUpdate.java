@@ -22,6 +22,7 @@ import com.x.sampleproject.core.entity.SampleEntityClassName;
 
 /**
  * 示例数据信息更新服务
+ * @author sword
  */
 public class ActionUpdate extends BaseAction {
 
@@ -58,7 +59,7 @@ public class ActionUpdate extends BaseAction {
 	 */
 	public static class Wi extends SampleEntityClassName{
 
-		public static WrapCopier<Wi, SampleEntityClassName> copier = WrapCopierFactory.wi( Wi.class, SampleEntityClassName.class, null, JpaObject.FieldsUnmodify );
+		public static final WrapCopier<Wi, SampleEntityClassName> copier = WrapCopierFactory.wi( Wi.class, SampleEntityClassName.class, null, JpaObject.FieldsUnmodify );
 
 	}
 

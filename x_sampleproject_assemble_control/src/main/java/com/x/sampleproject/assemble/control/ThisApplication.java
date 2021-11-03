@@ -2,6 +2,10 @@ package com.x.sampleproject.assemble.control;
 
 import com.x.base.core.project.Context;
 
+/**
+ * 应用初始化及销毁业务处理
+ * @author sword
+ */
 public class ThisApplication {
 
 	protected static Context context;
