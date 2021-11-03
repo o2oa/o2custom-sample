@@ -52,24 +52,6 @@ public class SampleEntityClassNameAction extends StandardJaxrsAction{
 		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
 	}
 
-	@JaxrsMethodDescribe( value = "获取所有的示例-信息", action = ActionListAll.class )
-	@GET
-	@Path("all")
-	@Produces(HttpMediaType.APPLICATION_JSON_UTF_8)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void listAll(@Suspended final AsyncResponse asyncResponse, @Context HttpServletRequest request ) {
-		ActionResult<List<ActionListAll.Wo>> result = new ActionResult<>();
-		EffectivePerson effectivePerson = this.effectivePerson(request);
-
-		try {
-			result = new ActionListAll().execute( request, effectivePerson );
-		} catch (Exception e) {
-			logger.error(e, effectivePerson, request, null);
-			result.error(e);
-		}
-		asyncResponse.resume(ResponseFactory.getEntityTagActionResultResponse(request, result));
-	}
-
 	@JaxrsMethodDescribe(value = "分页列示对象.", action = ActionListPaging.class)
 	@POST
 	@Path("list/paging/{page}/size/{size}")

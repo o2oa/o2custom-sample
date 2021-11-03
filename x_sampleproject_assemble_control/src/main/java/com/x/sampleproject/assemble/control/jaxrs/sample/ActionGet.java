@@ -10,6 +10,7 @@ import com.x.base.core.container.factory.EntityManagerContainerFactory;
 import com.x.base.core.entity.JpaObject;
 import com.x.base.core.project.bean.WrapCopier;
 import com.x.base.core.project.bean.WrapCopierFactory;
+import com.x.base.core.project.exception.ExceptionEntityNotExist;
 import com.x.base.core.project.http.ActionResult;
 import com.x.base.core.project.http.EffectivePerson;
 import com.x.base.core.project.logger.Logger;
@@ -47,13 +48,8 @@ public class ActionGet extends BaseAction {
 				result.setCount(1L);
 				result.setData( wrap );
 			}else {
-				Exception exception = new ExceptionSampleEntityClassNameNotExists( id );
-				result.error( exception );
+				throw new ExceptionEntityNotExist(id, SampleEntityClassName.class);
 			}
-		} catch (Exception e) {
-			Exception exception = new ExceptionSampleEntityClassFind( e, "系统在根据ID查询指定示例数据记录时发生异常！ID=" + id );
-			result.error( exception );
-			logger.error(e);
 		}
 
 		logger.info("action 'ActionGet' execute completed!");

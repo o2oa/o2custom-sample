@@ -19,6 +19,10 @@ import com.x.base.core.entity.JpaObject;
 import com.x.base.core.entity.SliceJpaObject;
 import com.x.base.core.project.annotation.FieldDescribe;
 
+/**
+ * 示例实体类
+ * @author sword
+ */
 @ContainerEntity
 @Entity
 @Table(name = PersistenceProperties.SampleEntityClassName.table, uniqueConstraints = {
@@ -31,10 +35,12 @@ public class SampleEntityClassName extends SliceJpaObject {
 	private static final long serialVersionUID = 1325197931747463979L;
 	private static final String TABLE = PersistenceProperties.SampleEntityClassName.table;
 
+	@Override
 	public String getId() {
 		return id;
 	}
 
+	@Override
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -44,21 +50,21 @@ public class SampleEntityClassName extends SliceJpaObject {
 	@Column(length = length_id, name = ColumnNamePrefix + id_FIELDNAME)
 	private String id = createId();
 
-	public void onPersist() throws Exception {
+	@Override
+	public void onPersist() {
 	}
 	/*
 	 * =============================================================================
 	 * ===== 以上为 JpaObject 默认字段
 	 * =============================================================================
-	 * =====
 	 */
 
 	/*
 	 * =============================================================================
 	 * ===== 以下为具体不同的业务及数据表字段要求
 	 * =============================================================================
-	 * =====
 	 */
+
 	public static final String name_FIELDNAME = "name";
 	@FieldDescribe("名称")
 	@RestrictFlag
